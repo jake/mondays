@@ -25,9 +25,14 @@ born    = Date.parse birthday
 today   = Date.current
 retire  = born.advance(years: retirement_age)
 
+unless today.monday?
+  puts "Today is not Monday. It is #{today.strftime("%A")}."
+  abort
+end
+
 mondays = today.upto(retire).count(&:monday?)
 
-mondays_message = "You have #{commas mondays} mondays left until you retire."
+mondays_message = "You have #{commas mondays} Mondays left until you retire."
 
 puts mondays_message
 
