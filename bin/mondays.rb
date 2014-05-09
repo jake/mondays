@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "active_support/core_ext/date/calculations"
 require "active_support/core_ext/date/conversions"
 
