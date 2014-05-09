@@ -25,23 +25,19 @@ born    = Date.parse birthday
 today   = Date.current
 retire  = born.advance(years: retirement_age)
 
-unless today.monday?
-  puts "Today is not Monday. It is #{today.strftime("%A")}."
+if today.monday?
+  mondays = today.upto(retire).count(&:monday?)
+  message = "You have #{commas mondays} Mondays left until you retire."
+end
+
+if message.nil?
+  puts "No message for today."
   abort
 end
 
-mondays = today.upto(retire).count(&:monday?)
-
-mondays_message = "You have #{commas mondays} Mondays left until you retire."
-
-puts mondays_message
-
-begin
-  @twilio_client.account.messages.create(
-    :from => twilio_from_number,
-    :to => to_number,
-    :body => mondays_message
-  )
-rescue Twilio::REST::RequestError => e
-  puts "Twilio RequestError: #{e.message}"
-end
+puts message
+@twilio_client.account.messages.create(
+  :from => twilio_from_number,
+  :to => to_number,
+  :body => message
+)
